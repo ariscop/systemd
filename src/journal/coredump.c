@@ -258,6 +258,12 @@ int main(int argc, char* argv[]) {
                         break;
 
                 coredump_size += n;
+
+                if(coredump_size > COREDUMP_MAX) {
+                        log_error("Coredump too large, ignoring");
+                        goto finalize;
+                }
+
                 if (!GREEDY_REALLOC(coredump_data, coredump_bufsize, coredump_size + 1)) {
                         r = log_oom();
                         goto finalize;
