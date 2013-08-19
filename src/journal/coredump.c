@@ -41,7 +41,7 @@
 #define COREDUMP_MIN_START (3*1024*1024)
 /* Make sure to not make this larger than the maximum journal entry
  * size. See ENTRY_SIZE_MAX in journald-native.c. */
-#define COREDUMP_MAX (768*1024*1024)
+#define COREDUMP_MAX (767*1024*1024)
 
 enum {
         ARG_PID = 1,
