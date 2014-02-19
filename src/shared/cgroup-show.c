@@ -78,12 +78,15 @@ static void show_pid_array(int pids[], unsigned n_pids, const char *prefix, unsi
 
                 get_process_cmdline(pids[i], n_columns, true, &t);
 
-                printf("%s%s%*lu %s\n",
+                printf("%s%s%s%s%*lu%s %s\n",
+                       ansi_highlight_green(),
                        prefix,
                        draw_special_char(extra ? DRAW_TRIANGULAR_BULLET :
                                          ((more || i < n_pids-1) ? DRAW_TREE_BRANCH : DRAW_TREE_RIGHT)),
+                       ansi_highlight_red(),
                        pid_width,
                        (unsigned long) pids[i],
+                       ansi_highlight_off(),
                        strna(t));
         }
 }
@@ -143,6 +146,11 @@ int show_cgroup_by_path(const char *path, const char *prefix, unsigned n_columns
         char *gn = NULL;
         bool shown_pids = false;
         int r;
+        const char *green, *cyan, *off;
+
+        green = ansi_highlight_green();
+        cyan  = ansi_highlight_cyan();
+        off   = ansi_highlight_off();
 
         assert(path);
 
@@ -177,8 +185,8 @@ int show_cgroup_by_path(const char *path, const char *prefix, unsigned n_columns
                 }
 
                 if (last) {
-                        printf("%s%s%s\n", prefix, draw_special_char(DRAW_TREE_BRANCH),
-                                           basename(last));
+                        printf("%s%s%s%s%s%s\n", green, prefix, draw_special_char(DRAW_TREE_BRANCH),
+                                           cyan, basename(last), off);
 
                         if (!p1) {
                                 p1 = strappend(prefix, draw_special_char(DRAW_TREE_VERT));
@@ -201,8 +209,8 @@ int show_cgroup_by_path(const char *path, const char *prefix, unsigned n_columns
                 show_cgroup_one_by_path(path, prefix, n_columns, !!last, kernel_threads, flags);
 
         if (last) {
-                printf("%s%s%s\n", prefix, draw_special_char(DRAW_TREE_RIGHT),
-                                   basename(last));
+                printf("%s%s%s%s%s%s\n", green, prefix, draw_special_char(DRAW_TREE_RIGHT),
+                                   cyan, basename(last), off);
 
                 if (!p2) {
                         p2 = strappend(prefix, "  ");

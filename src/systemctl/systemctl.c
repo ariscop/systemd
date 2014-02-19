@@ -2971,7 +2971,9 @@ static void print_status_info(
             (i->main_pid > 0 || i->control_pid > 0 || cg_is_empty_recursive(SYSTEMD_CGROUP_CONTROLLER, i->control_group, false) == 0)) {
                 unsigned c;
 
-                printf("   CGroup: %s\n", i->control_group);
+                printf("   CGroup: %s%s%s\n", ansi_highlight_cyan(),
+                                              i->control_group,
+                                              ansi_highlight_off());
 
                 if (arg_transport == BUS_TRANSPORT_LOCAL || arg_transport == BUS_TRANSPORT_CONTAINER) {
                         unsigned k = 0;
